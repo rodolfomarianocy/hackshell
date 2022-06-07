@@ -14,10 +14,9 @@ Details:
 
 -> hex = hexadecimal
 
--------------------------------
+---
 ### ex: hackshell 1a ip port long
---------------------------------
-
+---
 
 -> For connection or suggestions: 
 https://www.linkedin.com/in/rodolfomarianocy
