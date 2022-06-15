@@ -1,12 +1,19 @@
 #HackShell - Generator of some different reverse shells:
 
 Reverse Shell:
+
     a - Bash  
+    
     b - NetCat  
+    
     c - PHP  
+    
     d - Python  
+    
     e - Perl  
+    
     f - Ruby
+    
     g - nodejs
 
 Type:
