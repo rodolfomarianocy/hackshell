@@ -1,18 +1,23 @@
-# HackShell - Generator of some different reverse shells:
+#HackShell - Generator of some different reverse shells:
 
-1 - Reverse Shells [a - Bash | b - NetCat | c - PHP | d - Python | e - Perl | f - Ruby] [IP] [Port] [Encode(d, b64, urle, long, octa, hex)]
+Reverse Shell:
+    a - Bash  
+    b - NetCat  
+    c - PHP  
+    d - Python  
+    e - Perl  
+    f - Ruby] 
+    g - nodejs
 
-Details:
-
--> d = default
-
--> b64 = base64
-
--> urle = urlencode
-
--> long = IP Integer/DWORD
-
--> hex = hexadecimal
+Type:
+    d = default
+    b64 = base64
+    urle = urlencode
+    int = integer
+    octa = octadeximal
+    hex = hexadecimal
+    jlre = java.lang.Runtime.exec
+    func = function (only nodejs)
 
 ---
 ### ex: hackshell 1a ip port long
