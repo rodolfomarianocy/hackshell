@@ -6,7 +6,7 @@ Reverse Shell:
     c - PHP  
     d - Python  
     e - Perl  
-    f - Ruby] 
+    f - Ruby
     g - nodejs
 
 Type:
