@@ -18,12 +18,19 @@ Reverse Shell:
 
 Type:
     d = default
+    
     b64 = base64
+    
     urle = urlencode
+    
     int = integer
+    
     octa = octadeximal
+    
     hex = hexadecimal
+    
     jlre = java.lang.Runtime.exec
+    
     func = function (only nodejs)
 
 ---
