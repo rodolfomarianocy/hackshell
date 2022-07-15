@@ -214,7 +214,7 @@ try:
     elif sys.argv[1] == "2a":
         print("Builtin's RCE - Filter Bypass:")
         privesc()
-    elif sys.argv[1] == "--help":
+    elif sys.argv[1] == "--help" or "help":
         menu()
 except:
     menu()
