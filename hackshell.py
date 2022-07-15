@@ -214,8 +214,8 @@ try:
     elif sys.argv[1] == "2a":
         print("Builtin's RCE - Filter Bypass:")
         privesc()
-   # elif sys.arv[1] == "--help":
-   #     menu()
+    elif sys.arv[1] == "--help":
+        menu()
 except:
     menu()
     print("Some parameter is missing...")
