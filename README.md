@@ -17,6 +17,7 @@ Reverse Shell:
     g - nodejs
 
 Type:
+
     d = default
     
     b64 = base64
